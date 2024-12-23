@@ -1,0 +1,1118 @@
+﻿<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نموذج إدخال البيانات</title>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    direction: rtl;
+    text-align: right;
+}
+
+    .container {
+        width: 45%;
+        margin: 0 auto;
+        background-color: #fff; /* خلفية بيضاء للمحتوى */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        color: #003f88; /* أزرق داكن */
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: xx-large;
+    }
+
+    h2 {
+        color: #FF00FF; /* أزرق مشرق */
+        margin-bottom: 20px;
+        font-size: xx-large;
+        text-align: center;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+        min-width: 200px;
+        max-width: calc(33.33% - 10px);
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        font-weight: 700;
+    }
+
+    label {
+        margin-bottom: 10px;
+        font-weight: bold;
+        font-size: medium;
+        text-align: center;
+        color: #FF00FF; /* أزرق متناسق */
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="month"],
+    select {
+        padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        font-size: medium;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        color: #333;
+        font-weight: 700;
+    }
+
+    input:focus,
+    select:focus {
+        background-color: #e8f0fe; /* لون خلفية عند التركيز */
+        border-color: #007bff; /* لون الحدود عند التركيز */
+        outline: none; /* إزالة الإطار */
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* ظل عند التركيز */
+        transform: scale(1.02); /* زيادة حجم الحقل عند التركيز */
+    }
+
+    button {
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: medium;
+        color: #fff;
+        background-color: #007bff; /* أزرق أساسي */
+        border: none;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #0056b3; /* أزرق داكن عند التمرير */
+        transform: scale(1.05); /* تأثير تكبير خفيف عند التمرير */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: medium;
+        background-color: #FFFFFF; /* خلفية بيضاء للطاولة */
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    table th, table td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+
+    table th {
+        background-color: #3366CC; /* أزرق داكن */
+        color: #000000;
+    }
+
+    table td:last-child {
+        white-space: nowrap;
+    }
+
+    table td button {
+        padding: 6px 12px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    table td button:hover {
+        background-color: #0056b3; /* أزرق داكن عند التمرير */
+    }
+
+    .totals {
+        font-weight: bold;
+        background-color: #f0f0f0;
+        color: #333;
+    }
+
+    #dataForm {
+        margin-bottom: 20px;
+    }
+
+    #pageNumber {
+        font-size: xx-large;
+        color: #FF00FF; /* تركواز */
+    }
+</style>
+
+
+
+    <!-- مكتبة SheetJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+</head>
+<body>
+<h2 style="text-align:center; font-family: 'Imprint MT Shadow';"> ادخال فحص عداد احادي الوجة</h2>
+<form id="dataForm">
+<div class="form-row">
+                <div class="form-group">
+    <label>رقم الاذن:</label>
+    <input type="text" id="permissionNumber" required><br>
+</div>
+                <div class="form-group">
+    <label>تاريخ الطلب:</label>
+    <input type="date" id="requestDate" required><br>
+</div>
+                <div class="form-group">
+    <label>مراجع الحساب:</label>
+    <input type="text" id="accountReference" required><br>
+</div>
+                <div class="form-group">
+    <label>رقم العداد:</label>
+    <input type="text" id="meterNumber" required><br>
+</div>
+                <div class="form-group">
+    <label>رصيد له:</label>
+    <input type="number" id="balanceTo" required><br>
+</div>
+                <div class="form-group">
+    <label>رصيد مدين:</label>
+    <input type="number" id="balanceDebtor" required><br>
+</div>
+                <div class="form-group">
+    <label>حالة العداد:</label>
+    <select id="Select1" required>
+        <option value="">اختر حالة العداد</option>
+        <option value="سليم">سليم</option>
+        <option value="تالف">تالف</option>
+    </select>
+</div>
+                <div class="form-group">
+    <label>نوع الخلل:</label>
+    <select id="faultType" required>
+        <option value="">اختر نوع الخلل</option>
+        <option value="سليم">سليم</option>
+        <option value="تالف">تالف</option>
+        <option value="عيب اجزاء داخلية">عيب اجزاء داخلية</option>
+        <option value="عمدي">عمدي</option>
+        <option value="غير عمدي">غير عمدي</option>
+    </select>
+</div>
+                <div class="form-group">
+    <label>ملاحظات العطل:</label>
+    <input type="text" id="faultNotes" required><br>
+</div>
+                <div class="form-group">
+    <label>التعمد:</label>
+    <input id="Checkbox1" type="checkbox"><br>
+</div>
+                <div class="form-group">
+    <label>اشعار فاتورة:</label>
+    <input id="Checkbox2" type="checkbox"><br>
+</div>
+                <div class="form-group">
+    <label>كمية المتوسط:</label>
+    <input type="number" id="averageQuantity" required><br>
+</div>
+                <div class="form-group">
+    <label>فترة الاساس من:</label>
+    <input type="date" id="basePeriodFrom" required><br>
+</div>
+                <div class="form-group">
+    <label>فترة الاساس الى:</label>
+    <input type="date" id="basePeriodTo" required><br>
+</div>
+                <div class="form-group">
+    <label>فترة العطل من:</label>
+    <input type="date" id="faultPeriodFrom" required><br>
+</div>
+                <div class="form-group">
+    <label>فترة العطل الى:</label>
+    <input type="date" id="faultPeriodTo" required><br>
+</div>
+                <div class="form-group">
+    <label>كمية التسوية:</label>
+    <input type="number" id="settlementQuantity" required><br>
+</div>
+                <div class="form-group">
+    <label>اجمالي التسوية:</label>
+    <input type="number" id="totalSettlement" required><br>
+</div>
+                <div class="form-group">
+    <label>خصم المسدد:</label>
+    <input type="number" id="paidDiscount" required><br>
+</div>
+                <div class="form-group">
+    <label>تقسط على:</label>
+    <input type="text" id="installments" required><br>
+</div>
+                <div class="form-group">
+    <label>ملاحظات التنفيذ:</label>
+    <input type="text" id="executionNotes" required><br>
+</div>
+                <div class="form-group">
+        <label>تمت بنجاح:</label>
+        <input id="successCheckbox" type="checkbox"><br>
+
+</div>
+                <div class="form-group">
+    <button type="submit" class="button">حفظ البيانات</button>
+    </div>
+                <div class="form-group">
+     <button id="refreshData">تحديث البيانات</button>
+
+ </div>
+  </div>
+</form>
+<h2>استعلام عن فحص عداد احادي الوجة</h2>
+<!-- فلتر البيانات -->
+<div class="filter-container">
+    <div class="form-row">
+        <div class="form-group">
+            <label style="font-size: medium; font-weight: 700">رقم الاذن:</label>
+            <input type="text" id="filterPermissionNumber">
+        </div>
+        <div class="form-group">
+            <label style="font-size: medium; font-weight: 700">رقم العداد:</label>
+            <input type="text" id="filterMeterNumber">
+        </div>
+        <div class="form-group">
+            <label style="font-size: medium; font-weight: 700">تاريخ الطلب من:</label>
+            <input type="date" id="filterRequestDateFrom">
+        </div>
+        <div class="form-group">
+            <label style="font-size: medium; font-weight: 700">تاريخ الطلب إلى:</label>
+            <input type="date" id="filterRequestDateTo">
+        </div>
+        <div class="form-group">
+            <label style="font-size: medium; font-weight: 700">مرجع الحساب:</label>
+            <input type="text" id="filterAccountReference">
+        </div>
+        <div class="form-group">
+            <label style="font-weight: 700; font-size: medium">التعمد:</label>
+            <select id="filterIntentional">
+                <option value="">كل</option>
+                <option value="true">نعم</option>
+                <option value="false">لا</option>
+            </select>
+        </div>
+        <div class="form-group">          
+            <label style="font-size: medium; font-weight: 700">اشعار فاتورة:</label>
+            <select id="filterBillNotice">
+                <option value="">كل</option>
+                <option value="true">نعم</option>
+                <option value="false">لا</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label style="font-size: medium; font-weight: 700">تمت بنجاح:</label>
+            <select id="filterSuccess">
+                <option value="">كل</option>
+                <option value="true">نعم</option>
+                <option value="false">لا</option>
+            </select>
+        </div>
+       
+            <button id="applyFilters">بحث</button>
+            
+       
+ <!-- أزرار التصدير --><button id="printReport">عرض التقرير</button>
+ <!-- HTML: أزرار النسخة الاحتياطية -->
+<button id="exportBackup">تصدير النسخة الاحتياطية</button>
+<input type="file" id="importBackup" style="display: none;">
+<button id="importBackupButton">استيراد النسخة الاحتياطية</button>
+
+ 
+</div>
+</div>
+</div>
+</div>
+<form id="Form1">
+    <!-- (النموذج الموجود كما هو) ... -->
+</form>
+    <p style="font-size: xx-large; font-weight: 700; text-align: center; color: #FF00FF;">
+        تقرير فحص عداد احادي الوجة</p>
+        <div id="pagination">
+    <button id="prevPage">السابق</button>
+    <span id="pageNumber">1</span>
+    <button id="nextPage">التالي</button>
+</div>
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>رقم الاذن</th>
+            <th>تاريخ الطلب</th>
+            <th>مراجع الحساب</th>
+            <th>رقم العداد</th>
+            <th>رصيد له</th>
+            <th>رصيد مدين</th>
+            <th>حالة العداد</th>
+            <th>نوع الخلل</th>
+            <th>ملاحظات العطل</th>
+            <th>التعمد</th>
+            <th>اشعار فاتورة</th>
+            <th>كمية المتوسط</th>
+            <th>فترة الاساس من</th>
+            <th>فترة الاساس الى</th>
+            <th>عدد ايام المتوسط</th>
+            <th>فترة العطل من</th>
+            <th>فترة العطل الى</th>
+            <th>عدد ايام العطل</th>
+            <th>كمية التسوية</th>
+            <th>اجمالي التسوية</th>
+            <th>خصم المسدد</th>
+            <th>صافي التسوية</th>
+            <th>تقسط على</th>
+            <th>ملاحظات التنفيذ</th>
+            <th>تمت بنجاح</th>
+            <th>تعديل</th>
+            <th>حذف</th>
+            <th>ارفاق ملف</th>
+            <th>تحميل ملف</th>
+            <th>اسم الملف</th> <!-- عمود اسم الملف -->
+        </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+</table>
+ </div>
+ </div>
+</div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("data")) || [];
+let currentEditIndex = -1;
+
+// دالة لحساب عدد الأيام بين تاريخين
+function calculateDays(fromDate, toDate) {
+    const start = new Date(fromDate);
+    const end = new Date(toDate);
+    const timeDiff = end - start;
+    return Math.ceil(timeDiff / (1000 * 3600 * 24));
+}
+  
+
+4
+// دالة لحفظ البيانات
+document.getElementById("dataForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const permissionNumber = document.getElementById("permissionNumber").value;
+    const requestDate = document.getElementById("requestDate").value;
+    const accountReference = document.getElementById("accountReference").value;
+    const meterNumber = document.getElementById("meterNumber").value;
+    const balanceTo = parseFloat(document.getElementById("balanceTo").value);
+    const balanceDebtor = parseFloat(document.getElementById("balanceDebtor").value);
+    const meterStatus = document.getElementById("Select1").value;
+    const faultType = document.getElementById("faultType").value;
+    const faultNotes = document.getElementById("faultNotes").value;
+    const intentional = document.getElementById("Checkbox1").checked;
+    const billNotice = document.getElementById("Checkbox2").checked;
+    const averageQuantity = parseFloat(document.getElementById("averageQuantity").value);
+    const basePeriodFrom = document.getElementById("basePeriodFrom").value;
+    const basePeriodTo = document.getElementById("basePeriodTo").value;
+    const faultPeriodFrom = document.getElementById("faultPeriodFrom").value;
+    const faultPeriodTo = document.getElementById("faultPeriodTo").value;
+    const settlementQuantity = parseFloat(document.getElementById("settlementQuantity").value);
+    const totalSettlement = parseFloat(document.getElementById("totalSettlement").value);
+    const paidDiscount = parseFloat(document.getElementById("paidDiscount").value);
+    const installments = document.getElementById("installments").value;
+    const executionNotes = document.getElementById("executionNotes").value;
+    const success = document.getElementById("successCheckbox").checked;
+
+    const averageDays = calculateDays(basePeriodFrom, basePeriodTo);
+    const faultDays = calculateDays(faultPeriodFrom, faultPeriodTo);
+    const netSettlement = totalSettlement - paidDiscount;
+
+    const newItem = {
+        permissionNumber,
+        requestDate,
+        accountReference,
+        meterNumber,
+        balanceTo,
+        balanceDebtor,
+        meterStatus,
+        faultType,
+        faultNotes,
+        intentional,
+        billNotice,
+        averageQuantity,
+        basePeriodFrom,
+        basePeriodTo,
+        averageDays,
+        faultPeriodFrom,
+        faultPeriodTo,
+        faultDays,
+        settlementQuantity,
+        totalSettlement,
+        paidDiscount,
+        netSettlement,
+        installments,
+        executionNotes,
+        success
+    };
+
+    if (currentEditIndex === -1) {
+        data.push(newItem);
+    } else {
+        data[currentEditIndex] = newItem;
+        currentEditIndex = -1;
+    }
+
+    localStorage.setItem("data", JSON.stringify(data));
+    displayData();
+    document.getElementById("dataForm").reset();
+});
+
+ document.getElementById('applyFilters').addEventListener('click', function() {
+        const permissionNumber = document.getElementById('filterPermissionNumber').value;
+        const meterNumber = document.getElementById('filterMeterNumber').value;
+        const requestDateFrom = document.getElementById('filterRequestDateFrom').value;
+        const requestDateTo = document.getElementById('filterRequestDateTo').value;
+        const accountReference = document.getElementById('filterAccountReference').value;
+        const intentional = document.getElementById('filterIntentional').value;
+        const billNotice = document.getElementById('filterBillNotice').value;
+        const success = document.getElementById('filterSuccess').value; // إضافة متغير للفلتر الجديد
+
+        const filteredData = data.filter(item => {
+            return (!permissionNumber || item.permissionNumber.includes(permissionNumber)) &&
+                (!meterNumber || item.meterNumber.includes(meterNumber)) &&
+                (!requestDateFrom || new Date(item.requestDate) >= new Date(requestDateFrom)) &&
+                (!requestDateTo || new Date(item.requestDate) <= new Date(requestDateTo)) &&
+                (!accountReference || item.accountReference.includes(accountReference)) &&
+                (!intentional || item.intentional.toString() === intentional) &&
+                (!billNotice || item.billNotice.toString() === billNotice) &&
+                (!success || item.success.toString() === success); // إضافة شرط للفلتر الجديد
+        });
+
+        displayData(filteredData);
+    });
+
+function displayData(filteredData = data) {
+    const tableBody = document.getElementById("tableBody");
+    tableBody.innerHTML = "";
+
+    filteredData.forEach((item, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${item.permissionNumber}</td>
+            <td>${item.requestDate}</td>
+            <td>${item.accountReference}</td>
+            <td>${item.meterNumber}</td>
+            <td>${item.balanceTo}</td>
+            <td>${item.balanceDebtor}</td>
+            <td>${item.meterStatus}</td>
+            <td>${item.faultType}</td>
+            <td>${item.faultNotes}</td>
+            <td>${item.intentional ? "نعم" : "لا"}</td>
+            <td>${item.billNotice ? "نعم" : "لا"}</td>
+            <td>${item.averageQuantity}</td>
+            <td>${item.basePeriodFrom}</td>
+            <td>${item.basePeriodTo}</td>
+            <td>${item.averageDays}</td>
+            <td>${item.faultPeriodFrom}</td>
+            <td>${item.faultPeriodTo}</td>
+            <td>${item.faultDays}</td>
+            <td>${item.settlementQuantity}</td>
+            <td>${item.totalSettlement}</td>
+            <td>${item.paidDiscount}</td>
+            <td>${item.netSettlement}</td>
+            <td>${item.installments}</td>
+            <td>${item.executionNotes}</td>
+            <td>${item.success ? 'نعم' : 'لا'}</td>
+            <td><button onclick="editData(${index})">تعديل</button></td>
+            <td><button onclick="deleteData(${index})">حذف</button></td>
+             <td><input type="file" accept=".txt,.pdf,.jpeg,.jpg" onchange="attachFile(event, ${index})"></td>
+                    <td><button onclick="openFile(${index})">فتح الملف</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function attachFile(event, index) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    data[index].attachedFile = e.target.result;
+                    data[index].fileName = file.name;
+                    localStorage.setItem("data", JSON.stringify(data));
+                    displayData(); // تحديث العرض بعد إضافة الملف
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function openFile(index) {
+            const fileData = data[index].attachedFile;
+            if (fileData) {
+                const link = document.createElement("a");
+                link.href = fileData;
+                link.download = data[index].fileName;
+                link.click();
+            } else {
+                alert("لا يوجد ملف مرفق!");
+            }
+        }
+1
+function calculateTotals(filteredData) {
+    return filteredData.reduce(
+        (totals, item) => {
+            totals.balanceTo += item.balanceTo || 0;
+            totals.balanceDebtor += item.balanceDebtor || 0;
+            totals.averageQuantity += item.averageQuantity || 0;
+            totals.averageDays += item.averageDays || 0;
+            totals.faultDays += item.faultDays || 0;
+            totals.settlementQuantity += item.settlementQuantity || 0;
+            totals.totalSettlement += item.totalSettlement || 0;
+            totals.paidDiscount += item.paidDiscount || 0;
+            totals.netSettlement += item.netSettlement || 0;
+            return totals;
+        },
+        {
+            balanceTo: 0,
+            balanceDebtor: 0,
+            averageQuantity: 0,
+            averageDays: 0,
+            faultDays: 0,
+            settlementQuantity: 0,
+            totalSettlement: 0,
+            paidDiscount: 0,
+            netSettlement: 0,
+        }
+    );
+}
+
+
+function displayData(filteredData = data) {
+    const tableBody = document.getElementById("tableBody");
+    tableBody.innerHTML = "";
+
+    // عرض البيانات
+    filteredData.forEach((item, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${item.permissionNumber}</td>
+            <td>${item.requestDate}</td>
+            <td>${item.accountReference}</td>
+            <td>${item.meterNumber}</td>
+            <td>${item.balanceTo}</td>
+            <td>${item.balanceDebtor}</td>
+            <td>${item.meterStatus}</td>
+            <td>${item.faultType}</td>
+            <td>${item.faultNotes}</td>
+            <td>${item.intentional ? "نعم" : "لا"}</td>
+            <td>${item.billNotice ? "نعم" : "لا"}</td>
+            <td>${item.averageQuantity}</td>
+            <td>${item.basePeriodFrom}</td>
+            <td>${item.basePeriodTo}</td>
+            <td>${item.averageDays}</td>
+            <td>${item.faultPeriodFrom}</td>
+            <td>${item.faultPeriodTo}</td>
+            <td>${item.faultDays}</td>
+            <td>${item.settlementQuantity}</td>
+            <td>${item.totalSettlement}</td>
+            <td>${item.paidDiscount}</td>
+            <td>${item.netSettlement}</td>
+            <td>${item.installments}</td>
+            <td>${item.executionNotes}</td>
+            <td>${item.success ? 'نعم' : 'لا'}</td>
+            <td><button onclick="editData(${index})">تعديل</button></td>
+            <td><button onclick="deleteData(${index})">حذف</button></td>
+            <td><input type="file" accept=".txt,.pdf,.jpeg,.jpg" onchange="attachFile(event, ${index})"></td>
+            <td><button onclick="openFile(${index})">فتح الملف</button></td>
+            <td>${item.attachedFile ? item.fileName : "لا يوجد ملف"}</td> <!-- عمود المسار الجديد -->
+        `;
+        tableBody.appendChild(row);
+    });
+
+    // حساب الإجماليات
+    const totals = calculateTotals(filteredData);
+
+    // إضافة صف الإجماليات
+    const totalRow = document.createElement("tr");
+    totalRow.innerHTML = `
+        <td colspan="5">الإجمالي</td>
+        <td>${totals.balanceTo.toFixed(2)}</td>
+        <td>${totals.balanceDebtor.toFixed(2)}</td>
+        <td colspan="5"></td>
+        <td>${totals.averageQuantity.toFixed(2)}</td>
+        <td colspan="2"></td>
+        <td>${totals.averageDays}</td>
+        <td colspan="2"></td>
+        <td>${totals.faultDays}</td>
+        <td>${totals.settlementQuantity.toFixed(2)}</td>
+        <td>${totals.totalSettlement.toFixed(2)}</td>
+        <td>${totals.paidDiscount.toFixed(2)}</td>
+        <td>${totals.netSettlement.toFixed(2)}</td>
+        <td colspan="8"></td>
+    `;
+    tableBody.appendChild(totalRow);
+}
+
+// تحديث دالة إرفاق الملف لتخزين المسار
+function attachFile(event, index) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            data[index].attachedFile = e.target.result;
+            data[index].fileName = file.name;
+            localStorage.setItem("data", JSON.stringify(data));
+            displayData(); // تحديث العرض بعد إضافة الملف
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+
+2
+99989
+document.getElementById("printReport").addEventListener("click", function() {
+    const originalTable = document.getElementById("dataTable");
+    if (!originalTable) {
+        alert("لا يوجد جدول بيانات للطباعة!");
+        return;
+    }
+
+    // نسخ الجدول الأصلي
+    const table = originalTable.cloneNode(true);
+    
+    // عدد الأعمدة في الجدول
+    const columnCount = table.querySelectorAll("tr")[0].children.length;
+
+    // إزالة آخر 3 أعمدة
+    for (let i = 0; i < table.rows.length; i++) {
+        const row = table.rows[i];
+        for (let j = 0; j < 5; j++) { // إزالة آخر 3 أعمدة
+            const indexToRemove = columnCount - 1 - j;
+            if (row.cells[indexToRemove]) {
+                row.deleteCell(indexToRemove);
+            }
+        }
+    }
+
+    // فتح نافذة جديدة للطباعة
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>تقرير فحص عداد احادي الوجة تقرير الطباعة</title>
+                <style>
+  body {
+    font-family: Arial, sans-serif;
+    direction: rtl;
+    text-align: right;
+}
+
+.container {
+    width: 45%;
+    margin: 0 auto;
+}
+
+        h1 {
+            color: #0000CC;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: xx-large;
+        }
+
+        h2 {
+            color: #000000;
+            margin-bottom: 20px;
+            font-size: x-small;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            flex: 11;
+            min-width: 200px;
+            max-width: calc(33.33% - 10px);
+            display: flex;
+            flex-direction: column;
+        width: 343px;
+        font-weight: 700;
+        text-align: center;
+    }
+
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: medium;
+            text-align: center;
+        color: #00FFFF;
+    }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="month"] {
+            padding: 10px;
+            border: 5px solid #ccc;
+            border-radius: 60px;
+            font-size: medium;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        color: #000000;
+        font-weight: 700;
+    }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        input[type="month"]:focus {
+             background-color: #e8f0fe; /* لون الخلفية عند التركيز */
+    border-color: #007bff; /* لون الحدود عند التركيز */
+    outline: none; /* إزالة الإطار */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* ظل عند التركيز */
+    transform: scale(1.02); /* زيادة حجم الحقل عند التركيز */
+        }
+
+        button {
+            border-style: none;
+        border-color: inherit;
+        border-width: medium;
+        padding: 10px 20px;
+        border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: medium;
+        color: #FFFFFF;
+        background-color: #007BFF;
+        width: 117px;
+    }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        button[type="submit"]:hover {
+             background-color: #007bff;
+            color: #fff;
+        }
+
+        button[type="button"] {
+             background-color: #007bff;
+            color: #fff;
+        }
+
+        button[type="button"]:hover {
+             background-color: #007bff;
+            color: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: small;
+        color: #000000;
+    }
+
+       table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: xx-small;
+        color: #000000;
+    }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        table td:last-child {
+            white-space: nowrap;
+        }
+
+        table td button {
+            padding: 6px 12px;
+          background-color: #007bff;
+            color: #fff;
+        }
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        table td button:hover {
+           background-color: #007bff;
+            color: #fff;
+        }
+
+        .totals {
+            font-weight: bold;
+            background-color: #f0f0f0;
+        }
+
+        #dataForm {
+            margin-bottom: 20px;
+        }
+select, input {
+     padding: 10px;
+            border: 5px solid #ccc;
+            border-radius: 60px;
+            font-size: medium;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        color: #000000;
+        font-weight: 700;
+    }
+
+select:focus,
+input:focus {
+    background-color: #e8f0fe; /* لون الخلفية عند التركيز */
+    border-color: #007bff; /* لون الحدود عند التركيز */
+    outline: none; /* إزالة الإطار */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* ظل عند التركيز */
+    transform: scale(1.02); /* زيادة حجم الحقل عند التركيز */
+}
+    #pageNumber
+    {
+        font-size: xx-large;
+        color: #00FFFF;
+    }
+                </style>
+            </head>
+            <body>
+                <h2 style="text-align:center;"> تقرير فحص عداد احادي الوجة</h2>
+               
+<h2>وزارة الكهرباء والطاقة المتجددة</h2>
+<h2 class="style1">الشركة القابضة لكهرباء مصر</h2>
+<h2>شركة شمال القاهرة لتوزيع الكهرباء</h2>
+<h2>ادارة الظاهر</h2>
+                <div style="margin-bottom: 20px;">
+                    <button onclick="window.print()">طباعة</button>
+                </div>
+                ${table.outerHTML}
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+});
+
+    
+9999999
+function editData(index) {
+    currentEditIndex = index;
+    const item = data[index];
+
+    document.getElementById("permissionNumber").value = item.permissionNumber;
+    document.getElementById("requestDate").value = item.requestDate;
+    document.getElementById("accountReference").value = item.accountReference;
+    document.getElementById("meterNumber").value = item.meterNumber;
+    document.getElementById("balanceTo").value = item.balanceTo;
+    document.getElementById("balanceDebtor").value = item.balanceDebtor;
+    document.getElementById("Select1").value = item.meterStatus;
+    document.getElementById("faultType").value = item.faultType;
+    document.getElementById("faultNotes").value = item.faultNotes;
+    document.getElementById("Checkbox1").checked = item.intentional;
+    document.getElementById("Checkbox2").checked = item.billNotice;
+    document.getElementById("averageQuantity").value = item.averageQuantity;
+    document.getElementById("basePeriodFrom").value = item.basePeriodFrom;
+    document.getElementById("basePeriodTo").value = item.basePeriodTo;
+    document.getElementById("faultPeriodFrom").value = item.faultPeriodFrom;
+    document.getElementById("faultPeriodTo").value = item.faultPeriodTo;
+    document.getElementById("settlementQuantity").value = item.settlementQuantity;
+    document.getElementById("totalSettlement").value = item.totalSettlement;
+    document.getElementById("paidDiscount").value = item.paidDiscount;
+    document.getElementById("installments").value = item.installments;
+    document.getElementById("executionNotes").value = item.executionNotes;
+    document.getElementById("successCheckbox").checked = item.success;
+}
+
+function deleteData(index) {
+    data.splice(index, 1);
+    localStorage.setItem("data", JSON.stringify(data));
+    displayData();
+}
+function deleteData(index) {
+    if (confirm("هل أنت متأكد أنك تريد حذف هذا العنصر؟")) {
+        data.splice(index, 1); // حذف العنصر
+        localStorage.setItem("data", JSON.stringify(data)); // تحديث LocalStorage
+        displayData(); // تحديث عرض البيانات
+    }
+}
+let currentPage = 1;
+const itemsPerPage = 10; // Number of rows per page
+
+function paginateData(filteredData) {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredData.slice(startIndex, endIndex);
+}
+
+function updatePaginationControls(filteredData) {
+    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+    document.getElementById("pageNumber").textContent = `الصفحة ${currentPage} من ${totalPages}`;
+    document.getElementById("prevPage").disabled = currentPage === 1;
+    document.getElementById("nextPage").disabled = currentPage === totalPages;
+}
+
+document.getElementById("prevPage").addEventListener("click", function() {
+    if (currentPage > 1) {
+        currentPage--;
+        displayData();
+    }
+});
+
+document.getElementById("nextPage").addEventListener("click", function() {
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+    if (currentPage < totalPages) {
+        currentPage++;
+        displayData();
+    }
+});
+function displayData(filteredData = data) {
+    const tableBody = document.getElementById("tableBody");
+    tableBody.innerHTML = "";
+
+    const paginatedData = paginateData(filteredData);
+
+    // عرض البيانات
+    paginatedData.forEach((item, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+           <td>${index + 1}</td>
+            <td>${item.permissionNumber}</td>
+            <td>${item.requestDate}</td>
+            <td>${item.accountReference}</td>
+            <td>${item.meterNumber}</td>
+            <td>${item.balanceTo}</td>
+            <td>${item.balanceDebtor}</td>
+            <td>${item.meterStatus}</td>
+            <td>${item.faultType}</td>
+            <td>${item.faultNotes}</td>
+            <td>${item.intentional ? "نعم" : "لا"}</td>
+            <td>${item.billNotice ? "نعم" : "لا"}</td>
+            <td>${item.averageQuantity}</td>
+            <td>${item.basePeriodFrom}</td>
+            <td>${item.basePeriodTo}</td>
+            <td>${item.averageDays}</td>
+            <td>${item.faultPeriodFrom}</td>
+            <td>${item.faultPeriodTo}</td>
+            <td>${item.faultDays}</td>
+            <td>${item.settlementQuantity}</td>
+            <td>${item.totalSettlement}</td>
+            <td>${item.paidDiscount}</td>
+            <td>${item.netSettlement}</td>
+            <td>${item.installments}</td>
+            <td>${item.executionNotes}</td>
+            <td>${item.success ? 'نعم' : 'لا'}</td>
+            <td><button onclick="editData(${index})">تعديل</button></td>
+            <td><button onclick="deleteData(${index})">حذف</button></td>
+             <td><input type="file" accept=".txt,.pdf,.jpeg,.jpg" onchange="attachFile(event, ${index})"></td>
+                    <td><button onclick="openFile(${index})">فتح الملف</button></td>
+            <td>${item.attachedFile ? item.fileName : "لا يوجد ملف"}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+    // حساب الإجماليات
+    const totals = calculateTotals(filteredData);
+
+    // إضافة صف الإجماليات
+    const totalRow = document.createElement("tr");
+    totalRow.innerHTML = `
+        <td colspan="5">الإجمالي</td>
+        <td>${totals.balanceTo.toFixed(2)}</td>
+        <td>${totals.balanceDebtor.toFixed(2)}</td>
+        <td colspan="5"></td>
+        <td>${totals.averageQuantity.toFixed(2)}</td>
+        <td colspan="2"></td>
+        <td>${totals.averageDays}</td>
+        <td colspan="2"></td>
+        <td>${totals.faultDays}</td>
+        <td>${totals.settlementQuantity.toFixed(2)}</td>
+        <td>${totals.totalSettlement.toFixed(2)}</td>
+        <td>${totals.paidDiscount.toFixed(2)}</td>
+        <td>${totals.netSettlement.toFixed(2)}</td>
+        <td colspan="8"></td>
+    `;
+    tableBody.appendChild(totalRow);
+
+    // تحديث عناصر التنقل
+    updatePaginationControls(filteredData);
+}
+
+// JavaScript: تفعيل زر الاستيراد
+document.getElementById("importBackupButton").addEventListener("click", function() {
+    document.getElementById("importBackup").click();
+});
+
+// تصدير النسخة الاحتياطية كملف JSON
+document.getElementById("exportBackup").addEventListener("click", function() {
+    const dataStr = JSON.stringify(data);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "backup_data.json";
+    link.click();
+
+    URL.revokeObjectURL(url); // تحرير الموارد
+});
+
+// استيراد النسخة الاحتياطية من ملف JSON
+document.getElementById("importBackup").addEventListener("change", function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const importedData = JSON.parse(e.target.result);
+            if (Array.isArray(importedData)) {
+                data = importedData;
+                localStorage.setItem("data", JSON.stringify(data));
+                displayData(); // تحديث العرض بعد استيراد البيانات
+                alert("تم استيراد البيانات بنجاح!");
+            } else {
+                alert("صيغة الملف غير صالحة!");
+            }
+        } catch (error) {
+            alert("حدث خطأ أثناء استيراد البيانات!");
+        }
+    };
+
+    reader.readAsText(file);
+});
+
+document.getElementById("refreshData").addEventListener("click", function() {
+    // استرجاع البيانات من LocalStorage
+    data = JSON.parse(localStorage.getItem("data")) || [];
+    displayData(data); // تحديث عرض البيانات في الجدول
+});
+
+displayData();
+
+
+</script>
+
+</body>
+</html>

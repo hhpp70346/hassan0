@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول</title>
+     <link rel="icon" href="C:\Users\20101\Desktop\مشروع\gauge.png" type="image/png">
+    <style>
+        /* تحسين تنسيق الصفحة */
+        body {
+            font-family: 'Arial', sans-serif;
+            direction: rtl;
+            text-align: right;
+            background: linear-gradient(135deg, #f5f7fa, #e4ebf1);
+            padding: 20px;
+            position: relative;
+        }
+
+        .container {
+            width: 40%;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid #dee2e6;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            color: #495057;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            color: #6c757d;
+        }
+
+        select, input {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            border-color: #17a2b8;
+            outline: none;
+            box-shadow: 0 0 10px rgba(23, 162, 184, 0.5);
+        }
+
+        button {
+            padding: 12px;
+            font-size: 1.2em;
+            border: none;
+            background: linear-gradient(135deg, #17a2b8, #007bff);
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #138496, #0056b3);
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background-color: #adb5bd;
+            cursor: not-allowed;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 700;
+            color: #495057;
+        }
+
+        .footer span {
+            font-family: 'Algerian';
+            color: #495057;
+        }
+
+        /* تنسيق الصورة */
+        .side-image {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            max-width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 4px 1px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- صورة جانبية -->
+    
+</head>
+<body>
+    <div class="container">
+        <h2>تسجيل الدخول</h2>
+        <form id="loginForm">
+            <label for="username">اسم المستخدم:</label>
+            <select id="username" name="username" required>
+                <option value="" disabled selected>اختر اسم المستخدم</option>
+            </select>
+            
+            <label for="password">كلمة المرور:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit">تسجيل الدخول</button>
+        </form>
+    </div>
+
+    <p class="footer">
+        <span>جميع الحقوق محفوظة - HASSAN</span>
+    </p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // منع الرجوع إلى صفحة تسجيل الدخول إذا كان المستخدم مسجلًا بالفعل
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            if (currentUser) {
+                redirectToUserRole(currentUser);
+            }
+
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            const usernameSelect = document.getElementById('username');
+            users.forEach(user => {
+                const option = document.createElement('option');
+                option.value = user.username;
+                option.textContent = user.username;
+                usernameSelect.appendChild(option);
+            });
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = this.elements.username.value;
+            const password = this.elements.password.value;
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            const foundUser = users.find(user => user.username === username && user.password === password && user.isActive);
+
+            if (foundUser) {
+                sessionStorage.setItem('currentUser', JSON.stringify(foundUser));
+                redirectToUserRole(foundUser);
+            } else {
+                alert('اسم المستخدم أو كلمة المرور غير صحيحة أو المستخدم غير مفعل.');
+            }
+        });
+
+        function redirectToUserRole(user) {
+            const pages = {
+                admin: 'admin.htm',
+                account_manager: 'account_manager.htm',
+                issue_manager: 'issue_manager.htm',
+                general_manager_followup: 'general_manager_followup.htm',
+                revenue_review: 'revenue_review.htm'
+            };
+            if (pages[user.role]) {
+                window.location.href = pages[user.role];
+            } else {
+                alert('الصلاحية غير معروفة.');
+            }
+        }
+    </script>
+</body>
+</html>
