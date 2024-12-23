@@ -1,0 +1,590 @@
+﻿<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إدارة المستخدمين</title>
+<style>
+     body {
+    font-family: Arial, sans-serif;
+    direction: rtl;
+    text-align: right;
+}
+.container {
+    width: 99%;
+    margin: 0 auto;
+}
+
+        h1 {
+            color: #0000CC;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: xx-large;
+        }
+
+        h2 {
+            color: #FF00FF;
+            margin-bottom: 20px;
+            font-size: xx-large;
+        text-align: center;
+    }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            flex: 11;
+            min-width: 200px;
+            max-width: calc(33.33% - 10px);
+            display: flex;
+            flex-direction: column;
+        width: 1039px;
+        text-align: center;
+    }
+
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: medium;
+            text-align: center;
+        color: #FF00FF;
+    }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+input[type="nationalID"],
+input[type="password"],
+        input[type="month"] {
+            padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        font-size: medium;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        color: #333;
+        font-weight: 700;
+    }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+ input[type="nationalID"]:focus,
+  input[type="password"]:focus,
+        input[type="month"]:focus {
+             background-color: #e8f0fe; /* لون الخلفية عند التركيز */
+    border-color: #007bff; /* لون الحدود عند التركيز */
+    outline: none; /* إزالة الإطار */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* ظل عند التركيز */
+    transform: scale(1.02); /* زيادة حجم الحقل عند التركيز */
+        }
+
+        button {
+  padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: medium;
+        color: #fff;
+        background-color: #007bff; /* أزرق أساسي */
+        border: none;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+        button[type="submit"] {
+       padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: medium;
+        color: #fff;
+        background-color: #007bff; /* أزرق أساسي */
+        border: none;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+        button[type="submit"]:hover {
+       padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: medium;
+        color: #fff;
+        background-color: #007bff; /* أزرق أساسي */
+        border: none;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+        button[type="button"] {
+       padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: medium;
+        color: #fff;
+        background-color: #007bff; /* أزرق أساسي */
+        border: none;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+        button[type="button"]:hover {
+       padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: medium;
+        color: #fff;
+        background-color: #007bff; /* أزرق أساسي */
+        border: none;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: small;
+        color: #000000;
+        background-color: #FFFFFF;
+    }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #3366CC;
+            color: black;
+        }
+
+        table td:last-child {
+            white-space: nowrap;
+        }
+
+        table td button {
+            padding: 6px 12px;
+          background-color: #007bff;
+            color: #fff;
+        }
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        table td button:hover {
+           background-color: #007bff;
+            color: #fff;
+        }
+
+        .totals {
+            font-weight: bold;
+            background-color: #f0f0f0;
+        }
+
+        .style2 {
+            font-size: xx-large;
+        text-align: center;
+    }
+
+        #dataForm {
+            margin-bottom: 20px;
+        }
+select, input {
+     padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        font-size: medium;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        color: #333;
+        font-weight: 700;
+    }
+select:focus,
+input:focus {
+    background-color: #e8f0fe; /* لون الخلفية عند التركيز */
+    border-color: #007bff; /* لون الحدود عند التركيز */
+    outline: none; /* إزالة الإطار */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* ظل عند التركيز */
+    transform: scale(1.02); /* زيادة حجم الحقل عند التركيز */
+}
+    .style4
+    {
+        color: black;
+        background-color: #3366CC;
+    }
+    .style5
+    {
+        background-color: #3366CC;
+    }
+    </style>
+</head>
+<body>
+<div class="container">
+  <h2 class="style2">إدارة المستخدمين</h2>
+  <form id="userForm">
+    <div class="form-row">
+                <div class="form-group">
+      <label for="fullName">الاسم الكامل:</label>
+      <input type="text" id="fullName" name="fullName" required>
+    </div>
+
+    <div class="form-group">
+      <label for="username">اسم المستخدم:</label>
+      <input type="text" id="username" name="username" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password">كلمة المرور:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+
+    <div class="form-group">
+      <label for="nationalID">الرقم القومي:</label>
+      <input type="text" id="nationalID" name="nationalID" required>
+    </div>
+
+    <div class="form-group">
+      <label for="role">الصلاحية:</label>
+      <select id="role" name="role" required>
+        <option value="">اختر الصلاحية</option>
+        <option value="admin">المدير العام</option>
+        <option value="account_manager">إدارة الحسابات</option>
+        <option value="issue_manager">إدارة الإصدار</option>
+        <option value="general_manager_followup">متابعة المدير العام</option>
+        <option value="revenue_review">مراجعة الإيرادات</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="isActive">حالة المستخدم:</label>
+      <select id="isActive" name="isActive" required>
+        <option value="true">مفعل</option>
+        <option value="false">غير مفعل</option>
+      </select>
+        <br />
+        <br />
+    </div>
+
+
+    <button type="submit">إضافة مستخدم</button>
+    <br />
+    <br />
+  </form>
+  <button onclick="exportBackup()">تصدير البيانات</button>
+<input type="file" id="importFile" onchange="importBackup()" style="display: none;" />
+<button onclick="document.getElementById('importFile').click()">استيراد البيانات</button>
+
+  <!-- زر التحديث -->
+<button onclick="refreshUsers()" class="style1">تحديث</button>
+  <!-- زر الرجوع -->
+  <button onclick="goBack()" class="style1">رجوع</button>
+      </div>
+      <h2>قائمة بحث المستخدمين</h2>
+  <!-- حقول الفلترة -->
+  <div class="form-row">
+    <div class="form-group">
+      <label for="searchUsername">بحث باسم المستخدم:</label>
+      <input type="text" id="searchUsername" oninput="filterUsers()">
+    </div>
+    <div class="form-group">
+      <label for="searchRole">بحث بالصلاحية:</label>
+      <select id="searchRole" onchange="filterUsers()">
+        <option value="">اختر الصلاحية</option>
+        <option value="admin">المدير العام</option>
+        <option value="account_manager">إدارة الحسابات</option>
+        <option value="issue_manager">إدارة الإصدار</option>
+        <option value="general_manager_followup">متابعة المدير العام</option>
+        <option value="revenue_review">مراجعة الإيرادات</option>
+      </select>
+    </div>
+  </div>
+  <script>
+      // وظيفة للرجوع إلى الصفحة السابقة
+      function goBack() {
+          window.history.back();
+      }
+  </script>
+      </div>    
+          </div>
+  <h2>قائمة المستخدمين</h2>
+  <table id="usersTable">
+    <thead>
+      <tr>
+        <th>الاسم الكامل</th>
+        <th>اسم المستخدم</th>
+        <th class="style4">كلمة المرور</th>
+        <th class="style5">الرقم القومي</th>
+        <th>الصلاحية</th>
+        <th>الحالة</th>
+        <th>تعديل</th>
+        <th>حذف</th>
+      </tr>
+    </thead>
+    <tbody id="usersBody">
+      <!-- سيتم إضافة البيانات هنا -->
+    </tbody>
+  </table>
+</div>
+
+<script>
+// نفس الأكواد البرمجية السابقة لعرض وإدارة المستخدمين
+document.getElementById('userForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const fullName = this.elements.fullName.value;
+  const username = this.elements.username.value;
+  const password = this.elements.password.value;
+  const nationalID = this.elements.nationalID.value;
+  const role = this.elements.role.value;
+  const isActive = JSON.parse(this.elements.isActive.value);
+
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+
+  // التحقق من تكرار اسم المستخدم
+  const isDuplicate = users.some(user => user.username === username);
+  if (isDuplicate) {
+    alert('اسم المستخدم موجود بالفعل.');
+    return;
+  }
+
+  const newUser = {
+    fullName,
+    username,
+    password,
+    nationalID,
+    role,
+    isActive
+  };
+
+  users.push(newUser);
+  localStorage.setItem('users', JSON.stringify(users));
+
+  // إعادة تحميل قائمة المستخدمين
+  displayUsers();
+  this.reset();
+});
+
+// عرض المستخدمين عند تحميل الصفحة
+window.onload = function() {
+  displayUsers();
+};
+
+// عرض المستخدمين
+function displayUsers() {
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+  let usersBody = document.getElementById('usersBody');
+  usersBody.innerHTML = '';
+
+  users.forEach(user => {
+    let row = document.createElement('tr');
+
+    let fullNameCell = document.createElement('td');
+    fullNameCell.textContent = user.fullName;
+    row.appendChild(fullNameCell);
+
+    let usernameCell = document.createElement('td');
+    usernameCell.textContent = user.username;
+    row.appendChild(usernameCell);
+
+    let passwordCell = document.createElement('td');
+    passwordCell.textContent = user.password; // يجب تشفير كلمة المرور في الواقع
+    row.appendChild(passwordCell);
+
+    let nationalIDCell = document.createElement('td');
+    nationalIDCell.textContent = user.nationalID;
+    row.appendChild(nationalIDCell);
+
+    let roleCell = document.createElement('td');
+    roleCell.textContent = getRoleName(user.role);
+    row.appendChild(roleCell);
+
+    let isActiveCell = document.createElement('td');
+    isActiveCell.textContent = user.isActive ? 'مفعل' : 'غير مفعل';
+    row.appendChild(isActiveCell);
+
+    let editButton = document.createElement('button');
+    editButton.textContent = 'تعديل';
+    editButton.onclick = function() { editUser(user.username); };
+    let editCell = document.createElement('td');
+    editCell.appendChild(editButton);
+    row.appendChild(editCell);
+
+    let deleteButton = document.createElement('button');
+    deleteButton.textContent = 'حذف';
+    deleteButton.onclick = function() { deleteUser(user.username); };
+    let deleteCell = document.createElement('td');
+    deleteCell.appendChild(deleteButton);
+    row.appendChild(deleteCell);
+
+    usersBody.appendChild(row);
+  });
+}
+// الكود السابق لإضافة المستخدمين وعرضهم في الجدول
+
+// دالة فلترة المستخدمين
+function filterUsers() {
+  const searchUsername = document.getElementById('searchUsername').value.toLowerCase();
+  const searchRole = document.getElementById('searchRole').value;
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+  const filteredUsers = users.filter(user => {
+    return (
+      (user.username.toLowerCase().includes(searchUsername)) &&
+      (searchRole === "" || user.role === searchRole)
+    );
+  });
+  displayFilteredUsers(filteredUsers);
+}
+
+// عرض المستخدمين المصفّاة في الجدول
+function displayFilteredUsers(filteredUsers) {
+  const usersBody = document.getElementById('usersBody');
+  usersBody.innerHTML = '';
+
+  filteredUsers.forEach(user => {
+    let row = document.createElement('tr');
+
+    let fullNameCell = document.createElement('td');
+    fullNameCell.textContent = user.fullName;
+    row.appendChild(fullNameCell);
+
+    let usernameCell = document.createElement('td');
+    usernameCell.textContent = user.username;
+    row.appendChild(usernameCell);
+
+    let passwordCell = document.createElement('td');
+    passwordCell.textContent = user.password; // يجب تشفير كلمة المرور في الواقع
+    row.appendChild(passwordCell);
+
+    let nationalIDCell = document.createElement('td');
+    nationalIDCell.textContent = user.nationalID;
+    row.appendChild(nationalIDCell);
+
+    let roleCell = document.createElement('td');
+    roleCell.textContent = getRoleName(user.role);
+    row.appendChild(roleCell);
+
+    let isActiveCell = document.createElement('td');
+    isActiveCell.textContent = user.isActive ? 'مفعل' : 'غير مفعل';
+    row.appendChild(isActiveCell);
+
+    let editButton = document.createElement('button');
+    editButton.textContent = 'تعديل';
+    editButton.onclick = function() { editUser(user.username); };
+    let editCell = document.createElement('td');
+    editCell.appendChild(editButton);
+    row.appendChild(editCell);
+
+    let deleteButton = document.createElement('button');
+    deleteButton.textContent = 'حذف';
+    deleteButton.onclick = function() { deleteUser(user.username); };
+    let deleteCell = document.createElement('td');
+    deleteCell.appendChild(deleteButton);
+    row.appendChild(deleteCell);
+
+    usersBody.appendChild(row);
+  });
+}
+
+// تعديل دالة العرض لعرض المستخدمين المصفّاة
+function displayUsers() {
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+  displayFilteredUsers(users);
+}
+
+// دوال أخرى كما في الكود السابق
+// حذف مستخدم
+function deleteUser(username) {
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+  users = users.filter(user => user.username !== username);
+  localStorage.setItem('users', JSON.stringify(users));
+  displayUsers();
+}
+
+// تعديل مستخدم
+function editUser(username) {
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+  let user = users.find(user => user.username === username);
+
+  if (user) {
+    document.getElementById('fullName').value = user.fullName;
+    document.getElementById('username').value = user.username;
+    document.getElementById('password').value = user.password;
+    document.getElementById('nationalID').value = user.nationalID;
+    document.getElementById('role').value = user.role;
+    document.getElementById('isActive').value = user.isActive ? 'true' : 'false';
+
+    // حذف المستخدم القديم
+    users = users.filter(user => user.username !== username);
+    localStorage.setItem('users', JSON.stringify(users));
+
+    // تحديث قائمة المستخدمين
+    displayUsers();
+  }
+}
+
+
+
+  // وظيفة لتحديث قائمة المستخدمين
+  function refreshUsers() {
+    displayUsers();
+  }
+  // دالة تصدير البيانات
+function exportBackup() {
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(users));
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", "users_backup.json");
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  document.body.removeChild(downloadAnchor);
+}
+
+// دالة استيراد البيانات
+function importBackup() {
+  const fileInput = document.getElementById('importFile');
+  const file = fileInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      try {
+        const importedData = JSON.parse(event.target.result);
+        if (Array.isArray(importedData)) {
+          let existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+          existingUsers = [...existingUsers, ...importedData]; // دمج البيانات الحالية والجديدة
+          localStorage.setItem('users', JSON.stringify(existingUsers));
+          displayUsers();
+          alert("تم استيراد البيانات بنجاح.");
+        } else {
+          alert("ملف غير صالح. تأكد من تحميل ملف JSON صحيح.");
+        }
+      } catch (error) {
+        alert("حدث خطأ أثناء قراءة الملف. تأكد من تحميل ملف JSON صالح.");
+      }
+    };
+    reader.readAsText(file);
+  }
+}
+
+
+// استرجاع اسم الصلاحية
+function getRoleName(role) {
+  switch (role) {
+    case 'admin':
+      return 'المدير العام';
+    case 'account_manager':
+      return 'إدارة الحسابات';
+    case 'issue_manager':
+      return 'إدارة الإصدار';
+    case 'general_manager_followup':
+      return 'متابعة المدير العام';
+    case 'revenue_review':
+      return 'مراجعة الإيرادات';
+    default:
+      return 'غير معروف';
+  }
+}
+</script>
+
+</body>
+</html>

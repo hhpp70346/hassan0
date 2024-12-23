@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>الدعم الفني</title>
+    <style>
+    body {
+    font-family: Arial, sans-serif;
+    direction: rtl;
+    text-align: right;
+}
+
+    .container {
+        width: 45%;
+        margin: 0 auto;
+        background-color: #fff; /* خلفية بيضاء للمحتوى */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        color: #003f88; /* أزرق داكن */
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: xx-large;
+    }
+
+    h2 {
+        color: #FF00FF; /* أزرق مشرق */
+        margin-bottom: 20px;
+        font-size: xx-large;
+        text-align: center;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+        min-width: 200px;
+        max-width: calc(33.33% - 10px);
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        font-weight: 700;
+    }
+
+    label {
+        margin-bottom: 10px;
+        font-weight: bold;
+        font-size: medium;
+        text-align: center;
+        color: #FF00FF; /* أزرق متناسق */
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="month"],
+    select {
+        padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        font-size: medium;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        color: #333;
+        font-weight: 700;
+    }
+
+    input:focus,
+    select:focus {
+        background-color: #e8f0fe; /* لون خلفية عند التركيز */
+        border-color: #007bff; /* لون الحدود عند التركيز */
+        outline: none; /* إزالة الإطار */
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* ظل عند التركيز */
+        transform: scale(1.02); /* زيادة حجم الحقل عند التركيز */
+    }
+
+    button {
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: medium;
+        color: #fff;
+        background-color: #007bff; /* أزرق أساسي */
+        border: none;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #0056b3; /* أزرق داكن عند التمرير */
+        transform: scale(1.05); /* تأثير تكبير خفيف عند التمرير */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: medium;
+        background-color: #FFFFFF; /* خلفية بيضاء للطاولة */
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    table th, table td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+
+    table th {
+        background-color: #3366CC; /* أزرق داكن */
+        color: #000000;
+    }
+
+    table td:last-child {
+        white-space: nowrap;
+    }
+
+    table td button {
+        padding: 6px 12px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    table td button:hover {
+        background-color: #0056b3; /* أزرق داكن عند التمرير */
+    }
+
+    .totals {
+        font-weight: bold;
+        background-color: #f0f0f0;
+        color: #333;
+    }
+
+    #dataForm {
+        margin-bottom: 20px;
+    }
+
+    #pageNumber {
+        font-size: xx-large;
+        color: #FF00FF; /* تركواز */
+    }
+</style>
+
+</head>
+<body>
+<h2>الدعم الفني</h2>
+  <table id="dataTable">
+        <thead>
+            <tr>
+                <th>اسم المسؤول</th>
+                <th>رقم الدعم الفني</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+
+    <script>
+        // بيانات الدعم الفني
+        const data = [
+            { name: "حسن محمد", phone: "01014459926" }
+        ];
+
+        // مرجع إلى جسم الجدول
+        const tableBody = document.getElementById('tableBody');
+
+        // إضافة الصفوف إلى الجدول
+        data.forEach(item => {
+            const row = document.createElement('tr');
+
+            const nameCell = document.createElement('td');
+            nameCell.textContent = item.name;
+
+            const phoneCell = document.createElement('td');
+            phoneCell.textContent = item.phone;
+
+            row.appendChild(nameCell);
+            row.appendChild(phoneCell);
+            tableBody.appendChild(row);
+        });
+    </script>
+</body>
+</html>
